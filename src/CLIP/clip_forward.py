@@ -39,7 +39,7 @@ class Model(object):
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
         
         output = {
-            'probs': probs[0],
+            'probs': list(map(float, probs[0])),
             'labels': labels,
         }
 

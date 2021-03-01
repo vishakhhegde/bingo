@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask, flash, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
@@ -6,7 +7,7 @@ from datetime import datetime
 
 from CLIP.clip_forward import Model
 
-UPLOAD_FOLDER = '/home/vishakh/bingo/bingo_uploads'
+UPLOAD_FOLDER = 'static/bingo_uploads'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -35,6 +36,17 @@ class Bingo(db.Model):
     def __repr__(self):
         return '<Image %r>' % self.id
 
+@app.route('/style-detector/<image_name>')
+def display_result(**kwargs):
+    messages = json.loads(request.args['messages'])
+    image_path = messages['image_path']
+    image_name = messages['image_name']
+    output = messages['output']
+    return render_template('output.html',
+                           image_name=image_name,
+                           image_path=image_path,
+                           output=output)
+
 @app.route('/style-detector', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
@@ -56,8 +68,15 @@ def index():
             output = model.process_input(
                 image=image_path,
                 labels=ALL_LABELS)
-            print(output)
-            return redirect(request.url)
+            messages = {
+                'image_path': image_path,
+                'image_name': image_name,
+                'output': output,
+            }
+            return redirect(url_for('.display_result',
+                            image_name=image_name,
+                            messages=json.dumps(messages)))
+
         except Exception as e:
             print(str(e))
             return "Issue uploading image"
