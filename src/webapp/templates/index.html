@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+{% endblock %}
+
+{% block body%}
+<h1>Style Detector</h1>
+<form action="/style-detector" method="POST" enctype="multipart/form-data">
+    <label for="image">Select image:</label>
+    <input type="file" id="image" name="image" accept="image/*">
+    <input type="submit" Value="Upload">
+  </form>
+
+{% endblock %}
