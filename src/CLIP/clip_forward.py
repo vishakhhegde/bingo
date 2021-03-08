@@ -38,10 +38,8 @@ class Model(object):
             logits_per_image, logits_per_text = self.model(image, text)
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
         
-        output = {
-            'probs': list(map(float, probs[0])),
-            'labels': labels,
-        }
+        probs = probs[0]
+        output = {label: float(prob) for prob, label in zip(probs, labels)}
 
         return output
 
