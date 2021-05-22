@@ -13,6 +13,7 @@ flags.DEFINE_string('source_image', None, 'Source image of a cloth')
 flags.DEFINE_string('source_keypoints', None, 'Source keypoints')
 flags.DEFINE_string('target_image', None, 'Target image of a person')
 flags.DEFINE_string('target_keypoints', None, 'Target keypoints')
+flags.DEFINE_string('output_image', 'output.jpg', 'Output image filename')
 FLAGS = flags.FLAGS
 
 def extract_index_nparray(nparray):
@@ -89,8 +90,6 @@ def main(argv):
             triangle = [index_pt1, index_pt2, index_pt3]
             indexes_triangles.append(triangle)
 
-    print(len(indexes_triangles))
-
     for triangle_index in indexes_triangles:
         tr1_pt1 = source_keypoints['keypoints'][triangle_index[0]]
         tr1_pt2 = source_keypoints['keypoints'][triangle_index[1]]
@@ -145,9 +144,12 @@ def main(argv):
     target_img_new_full = cv2.add(target_img_orig, target_img_new)
 
     target_img_new_full = cv2.resize(target_img_new_full, (target_img_shape[1], target_img_shape[0]))
+    cv2.imwrite(FLAGS.output_image, target_img_new_full)
     cv2.imshow('image', target_img_new_full)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
+
+
 
 if __name__ == '__main__':
     app.run(main)

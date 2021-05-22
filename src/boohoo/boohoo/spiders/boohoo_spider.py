@@ -12,13 +12,7 @@ class ProductSpider(scrapy.Spider):
     allowed_domains = ['us.boohoo.com']
     start_urls = ['https://us.boohoo.com/womens/tops']
 
-    # rules = [Rule(LinkExtractor(), callback='parse_filter_link', follow=True)]
-
     def parse_link(self, response):
-        # is_product_page = response.css('div.product-image-container > div.product-primary-image > a::attr(href)')
-        # check_women = response.xpath('//*[@id="main"]/div[1]/ol/li[2]/a/span/text()').extract_first()
-        # check_top = response.xpath('//*[@id="main"]/div[1]/ol/li[3]/a/span/text()').extract_first()
-        # if is_product_page and check_women=='WOMENS' and check_top=='TOPS':
         product_loader = ItemLoader(item=BoohooItem(),
                                     selector=response)
         product_loader.add_css('photo_url', 'div.product-image-container > div.product-primary-image > a::attr(href)')
@@ -30,7 +24,6 @@ class ProductSpider(scrapy.Spider):
 
     def parse(self, response):
         search_results = response.css('div.product-tile')
-        print(len(search_results))
         for i, product in enumerate(search_results):
             link = process_link(
                 product.css('div.product-tile-name > a.name-link::attr(href)').extract_first())

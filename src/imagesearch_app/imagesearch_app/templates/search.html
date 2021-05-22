@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+{% endblock %}
+
+{% block main%}
+<form action="/search" method="POST" enctype="multipart/form-data">
+    <label for="image">Select image:</label>
+    <input type="file" id="image" name="image" accept="image/*">
+    <input type="submit" Value="Upload">
+</form>
+
+<article class="media content-section">
+    <div class="container">
+        <div class="row">
+            {% for result in results %}
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <img class="card-img-top" src={{ result.photo_url }} alt="Card image cap">
+                        <div class="card-body">    
+                            <a href={{ result.link }} class="btn btn-outline-primary btn-sm">
+                                {{ result.title }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}    
+        </div>
+    </div>
+</article>
+
+{% endblock %}
