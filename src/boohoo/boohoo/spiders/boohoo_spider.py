@@ -15,6 +15,7 @@ class ProductSpider(scrapy.Spider):
     def parse_link(self, response):
         product_loader = ItemLoader(item=BoohooItem(),
                                     selector=response)
+        product_loader.add_value('product_id', response.url)
         product_loader.add_css('photo_url', 'div.product-image-container > div.product-primary-image > a::attr(href)')
         product_loader.add_css('title', 'div.product-col-2 > h1.product-name::text')
         product_loader.add_value('link', response.url)

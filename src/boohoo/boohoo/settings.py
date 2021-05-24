@@ -68,7 +68,7 @@ ROBOTSTXT_OBEY = False
 
 # Feed exporters
 FEED_FORMAT = 'json'
-FEED_URI = 'tmp/boohoo_tops.json'
+FEED_URI = 'tmp/boohoo_tops_new.json'
 
 REDIRECT_ENABLED = True
 
